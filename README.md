@@ -1,8 +1,8 @@
 # react-spring-scroll-hook
 
-![demo](assets/scroll.gif)
-
 Simple hook for creating smooth scroll list with arrows.
+
+![demo](assets/scroll.gif)
 
 ## Install
 
@@ -27,7 +27,7 @@ return <div>
 
   <div className="overflow" onWheel={handleWheel}>
     {children}
-  </ScrollRow>
+  </div>
 
   <img src={arrowNextIcon} onClick={handleRightClick} />
 </div>

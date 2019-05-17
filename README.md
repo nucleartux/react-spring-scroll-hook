@@ -4,6 +4,12 @@
 
 Simple hook for creating smooth scroll list with arrows.
 
+## Install
+
+```
+yarn add react-spring-scroll-hook
+```
+
 ## Example
 
 ```

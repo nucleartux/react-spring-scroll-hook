@@ -8,49 +8,53 @@ function useSpringState(): [number, (fn: (prev: number) => number) => void] {
   return [value, setTarget];
 }
 
-export default function useSpringScroll() {
+function useSpringScroll({ step = 100 }: { step?: number } = {}) {
   const rowEl = useRef<HTMLDivElement>(null);
   const [value, setTarget] = useSpringState();
-  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [direction, setDirection] = useState<string | undefined>();
 
   useEffect(() => {
-    if (shouldAnimate && rowEl.current) {
+    if (
+      rowEl.current &&
+      ((direction === "left" && rowEl.current.scrollLeft > value) ||
+        (direction === "right" && rowEl.current.scrollLeft < value))
+    ) {
       rowEl.current.scrollLeft = value;
     }
-  }, [value, shouldAnimate]);
+  }, [value, direction]);
 
   function handlePrevClick() {
-    setTarget(target => {
-      const next = target - 100;
+    setTarget((target) => {
+      const next = target - step;
 
       return next < 0 ? 0 : next;
     });
-    setShouldAnimate(true);
+    setDirection("left");
   }
 
   function handleRightClick() {
-    setTarget(target => {
+    setTarget((target) => {
       if (!rowEl.current) {
         return target;
       }
 
-      const next = target + 100;
+      const next = target + step;
       const { scrollWidth, offsetWidth } = rowEl.current;
       const width = scrollWidth - offsetWidth;
 
       return next > width ? width : next;
     });
-    setShouldAnimate(true);
+    setDirection("right");
   }
 
   function handleWheel() {
-    setShouldAnimate(false);
+    setDirection(undefined);
   }
 
   return {
     ref: rowEl,
-    onWheel: handleWheel,
-    onRight: handleRightClick,
-    onLeft: handlePrevClick,
+    reset: handleWheel,
+    right: handleRightClick,
+    left: handlePrevClick,
   };
 }

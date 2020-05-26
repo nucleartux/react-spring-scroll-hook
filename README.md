@@ -17,10 +17,10 @@ import useSpringScroll from 'react-spring-scroll-hook';
 
 const {
   ref,
-  onLeft: handlePrevClick,
-  onWheel: handleWheel,
-  onRight: handleRightClick
-} = useSpringScroll();
+  left: handlePrevClick,
+  reset: handleWheel,
+  right: handleRightClick
+} = useSpringScroll({ step: 100 });
 
 return <div>
   <img src={arrowPrevIcon} onClick={handlePrevClick} />

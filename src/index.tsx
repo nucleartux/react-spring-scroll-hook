@@ -8,7 +8,9 @@ function useSpringState(): [number, (fn: (prev: number) => number) => void] {
   return [value, setTarget];
 }
 
-function useSpringScroll({ step = 100 }: { step?: number } = {}) {
+export default function useSpringScroll({
+  step = 100,
+}: { step?: number } = {}) {
   const rowEl = useRef<HTMLDivElement>(null);
   const [value, setTarget] = useSpringState();
   const [direction, setDirection] = useState<string | undefined>();
@@ -16,24 +18,24 @@ function useSpringScroll({ step = 100 }: { step?: number } = {}) {
   useEffect(() => {
     if (
       rowEl.current &&
-      ((direction === "left" && rowEl.current.scrollLeft > value) ||
-        (direction === "right" && rowEl.current.scrollLeft < value))
+      ((direction === 'left' && rowEl.current.scrollLeft > value) ||
+        (direction === 'right' && rowEl.current.scrollLeft < value))
     ) {
       rowEl.current.scrollLeft = value;
     }
   }, [value, direction]);
 
   function handlePrevClick() {
-    setTarget((target) => {
+    setTarget(target => {
       const next = target - step;
 
       return next < 0 ? 0 : next;
     });
-    setDirection("left");
+    setDirection('left');
   }
 
   function handleRightClick() {
-    setTarget((target) => {
+    setTarget(target => {
       if (!rowEl.current) {
         return target;
       }
@@ -44,7 +46,7 @@ function useSpringScroll({ step = 100 }: { step?: number } = {}) {
 
       return next > width ? width : next;
     });
-    setDirection("right");
+    setDirection('right');
   }
 
   function handleWheel() {

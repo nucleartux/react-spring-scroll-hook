@@ -53,10 +53,29 @@ export default function useSpringScroll({
     setDirection(undefined);
   }
 
+  function handleSetOffset(offset: number) {
+    if (!rowEl.current) {
+      return;
+    }
+    if (offset + step > rowEl.current.clientWidth + rowEl.current.scrollLeft) {
+      const target = offset + step - rowEl.current.clientWidth;
+      setDirection('right');
+      setTarget(() => target);
+      return;
+    }
+    if (offset - step < rowEl.current.clientWidth + rowEl.current.scrollLeft) {
+      const target = offset - step;
+      setDirection('left');
+      setTarget(() => target);
+      return;
+    }
+  }
+
   return {
     ref: rowEl,
     reset: handleWheel,
     right: handleRightClick,
     left: handlePrevClick,
+    setOffset: handleSetOffset,
   };
 }
